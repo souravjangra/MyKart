@@ -1,42 +1,100 @@
 import React, {Component} from 'react';
+import {
+    Collapse,
+    Navbar,
+    NavbarToggler,
+    NavbarBrand,
+    Nav,
+    NavItem,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    NavbarText,
+    Button
+} from 'reactstrap';
+import {NavLink} from 'react-router-dom';
+import './Home.sass'
+import Card from 'react-bootstrap/Card'
+import {Container, Row} from 'react-bootstrap';
 
 class Home extends Component {
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            isNavOpen: false,
+            isSetOpen: false,
+            products: []
+        }
+    }
+
+    componentDidMount() {
+        this.fetchProducts();
+    }
+
+    fetchProducts = async () => {
+        const res = await fetch('http://localhost:5000/api/v1/products')
+            .then((response) => {
+                return response.json()
+            })
+        this.setState({products: res});
+    }
+
+    renderProducts = () => {
+        var products = this.state.products.map((product) => {
+            return <Card style={{width: '18rem', margin: '12px'}}>
+                <Card.Body>
+                    <Card.Title>{product.name}</Card.Title>
+                    <Card.Img variant="top" src="holder.js/100px180" />
+                    <Card.Text>
+                        {product.description}
+                    </Card.Text>
+                    <Button variant="primary">Go somewhere</Button>
+                </Card.Body>
+            </Card>
+        });
+
+        return products;
+    }
+
+    navToggle = () => {
+        this.setState(prevState => ({
+            isNavOpen: !prevState.isNavOpen
+        }));
+    }
+
     render() {
         return (
             <div>
-                <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-                    <a className="navbar-brand" href="#">MyKart</a>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                            aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul className="navbar-nav ml-auto">
-                            <li className="nav-item active">
-                                <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Features</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">Pricing</a>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Dropdown link
-                                </a>
-                                <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a className="dropdown-item" href="#">Action</a>
-                                    <a className="dropdown-item" href="#">Another action</a>
-                                    <a className="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-                <h1>Hello from ruby</h1>
+                <Navbar color="dark" dark expand="md">
+                    <NavbarBrand href="/">MyKart</NavbarBrand>
+                    <NavbarToggler onClick={this.navToggle}/>
+                    <Collapse isOpen={this.state.isNavOpen} navbar>
+                        <Nav className="ml-auto" navbar>
+                            <NavItem>
+                                <NavLink to="/" className="inactive" activeClassName="active"
+                                         exact={true}>Home</NavLink>
+                            </NavItem>
+                            <NavItem className="ml-3">
+                                <NavLink to="/login" className="inactive" activeClassName="active"
+                                         exact={true}>Login</NavLink>
+                            </NavItem>
+                            <NavItem className="ml-3">
+                                <NavLink to="/cart" className="inactive" activeClassName="active"
+                                         exact={true}>Cart</NavLink>
+                            </NavItem>
+                        </Nav>
+                    </Collapse>
+                </Navbar>
+                <Container>
+                    <h2>Product List: </h2>
+                    <Row>
+                        {
+                            this.renderProducts()
+                        }
+                    </Row>
+                </Container>
             </div>
         );
     }
