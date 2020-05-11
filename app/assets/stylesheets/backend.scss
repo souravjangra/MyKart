@@ -1,0 +1,42 @@
+// Place all the styles related to the Backend controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.header {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.main {
+  background-color: #EFEFEF;
+}
+
+.admin-login {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.home {
+  background-color: #EFEFEF;
+
+  .header {
+    text-align: center;
+  }
+  .product-header{
+    margin-left: 16px;
+  }
+}
+
+.new-product {
+
+  &.header {
+    text-align: center;
+  }
+
+  &.product-form {
+    margin-left: 80px;
+    margin-right: 80px;
+  }
+
+}
+

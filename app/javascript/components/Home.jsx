@@ -44,13 +44,27 @@ class Home extends Component {
     renderProducts = () => {
         var products = this.state.products.map((product) => {
             return <Card style={{width: '18rem', margin: '12px'}}>
-                <Card.Body>
-                    <Card.Title>{product.name}</Card.Title>
-                    <Card.Img variant="top" src="holder.js/100px180" />
-                    <Card.Text>
-                        {product.description}
-                    </Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
+                <Card.Body class="d-flex flex-column p-3">
+                    <div class="row">
+                        <div class="col">
+                            <Card.Title>{product.name}</Card.Title>
+                            <Card.Text>
+                                {product.description}
+                            </Card.Text>
+                        </div>
+                        <div class="col">
+                            <Card.Img style={{height: 200, width: 120}} variant="top" src={product.image}
+                                      class="float-right"/>
+                        </div>
+                    </div>
+                    <div class="row justify-content-around mt-2">
+                        <div class="col">
+                            <Button outline color="primary">Buy Now</Button>
+                        </div>
+                        <div className="col">
+                            <Button outline color="primary">Add to cart</Button>
+                        </div>
+                    </div>
                 </Card.Body>
             </Card>
         });

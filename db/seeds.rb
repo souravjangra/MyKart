@@ -6,4 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-product = Product.create(sku: 51, name: 'Iphone 11', description: 'Mobile phone', price: 54900, quantity: 10)
+# product = Product.create(sku: 51, name: 'Iphone 11', description: 'Mobile phone', price: 54900, quantity: 10)
+
+# admin = Admin.create(username: 'admin', password_digest: Admin.digest('12345'));

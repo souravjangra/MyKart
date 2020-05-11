@@ -1,0 +1,46 @@
+<div class="container">
+    <%= link_to "Back", backend_products_path, :class => "btn btn-primary btn-sm", :style=>'margin-top: 16px; margin-bottom: 12px'%>
+
+    <h1 class="mt-4">Update Product</h1>
+
+    <%= form_with scope: :product, model: [:backend, :product] , url: edit_backend_product_path, method: 'put', local: true do |form| %>
+
+                <div class="form-group">
+                        <%= form.label :sku %>
+                        <%= form.text_field :sku, class: "form-control", "size" => 16, placeholder: "Enter SKU",
+                          value: @product.sku %>
+                </div>
+                <div class="form-group">
+                        <%= form.label :name %>
+                        <%= form.text_field :name, class: "form-control", placeholder: 'Enter Name',
+                         value: @product.name %>
+                </div>
+                <div class="form-group">
+                        <%= form.label :description %>
+                        <%= form.text_field :description, class: "form-control", placeholder: 'Enter Description',
+                         value: @product.description %>
+                </div>
+
+                <div class="form-group">
+                        <%= form.label :price %>
+                        <%= form.text_field :price, class: "form-control", placeholder: 'Enter Price',
+                         value: @product.price %>
+                </div>
+                <div class="form-group">
+                        <%= form.label :quantity %>
+                        <%= form.text_field :quantity, class: "form-control", placeholder: 'Enter Quantity',
+                         value: @product.quantity %>
+                </div>
+
+                <div class="form-group">
+                        <%= form.label :image %>
+                        <%= form.file_field :image, class: "form-control-file" %>
+                </div>
+
+                <div class="form-group d-flex justify-content-center">
+                    <%= form.submit "Update", class: "btn btn-primary" %>
+                </div>
+
+    <% end %>
+
+</div>
