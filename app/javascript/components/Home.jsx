@@ -1,11 +1,5 @@
 import React, {Component} from 'react';
 import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -16,7 +10,12 @@ import {
 import {NavLink} from 'react-router-dom';
 import './Home.sass'
 import Card from 'react-bootstrap/Card'
-import {Container, Row} from 'react-bootstrap';
+import {Container, Row, Col} from 'react-bootstrap';
+import Basket from "./Products/Basket";
+import {connect} from 'react-redux';
+import {fetchProducts } from "../store/actions/productActions";
+import {addToCart} from "../store/actions/cartActions";
+import MyNav from "./Navbar/Navbar";
 
 class Home extends Component {
 
@@ -25,24 +24,46 @@ class Home extends Component {
         this.state = {
             isNavOpen: false,
             isSetOpen: false,
-            products: []
+            products: [],
+            cartItems: []
         }
     }
 
     componentDidMount() {
-        this.fetchProducts();
+        this.fetchProductsCall();
+        // if(localStorage.getItem('cartItems')) {
+        //     this.setState({
+        //         cartItems: JSON.parse(localStorage.getItem('cartItems'))
+        //     });
+        // }
     }
 
-    fetchProducts = async () => {
-        const res = await fetch('http://localhost:5000/api/v1/products')
-            .then((response) => {
-                return response.json()
-            })
-        this.setState({products: res});
+    handleRemoveFromCart (e, item) {
+         // this.setState(state=>{
+         //     const cartItems = state.cartItems.filter(el => el.id !== item.id);
+         //     localStorage.setItem("cartItems", JSON.stringify(cartItems));
+         //     return {cartItems};
+         // });
+    }
+
+    addToCart = async (id) => {
+        // fetch(`http://localhost:5000/api/v1/products/add_to_cart/${id}`,{
+        //     method: 'POST'
+        // });
+    }
+
+    fetchProductsCall = async () => {
+        this.props.fetchProducts();
+
+        if(localStorage.getItem('cartItems')) {
+            this.setState({
+                cartItems: JSON.parse(localStorage.getItem('cartItems'))
+            });
+        }
     }
 
     renderProducts = () => {
-        var products = this.state.products.map((product) => {
+        var products = this.props.products.map((product) => {
             return <Card style={{width: '18rem', margin: '12px'}}>
                 <Card.Body class="d-flex flex-column p-3">
                     <div class="row">
@@ -51,6 +72,10 @@ class Home extends Component {
                             <Card.Text>
                                 {product.description}
                             </Card.Text>
+                            <Card.Text>
+                                <p>&#8377;{product.price}</p>
+                            </Card.Text>
+
                         </div>
                         <div class="col">
                             <Card.Img style={{height: 200, width: 120}} variant="top" src={product.image}
@@ -62,7 +87,7 @@ class Home extends Component {
                             <Button outline color="primary">Buy Now</Button>
                         </div>
                         <div className="col">
-                            <Button outline color="primary">Add to cart</Button>
+                            <Button outline color="primary" onClick={() => {this.props.addToCart(this.props.cartItems,product)}}>Add to cart</Button>
                         </div>
                     </div>
                 </Card.Body>
@@ -72,41 +97,24 @@ class Home extends Component {
         return products;
     }
 
-    navToggle = () => {
-        this.setState(prevState => ({
-            isNavOpen: !prevState.isNavOpen
-        }));
-    }
-
     render() {
         return (
             <div>
-                <Navbar color="dark" dark expand="md">
-                    <NavbarBrand href="/">MyKart</NavbarBrand>
-                    <NavbarToggler onClick={this.navToggle}/>
-                    <Collapse isOpen={this.state.isNavOpen} navbar>
-                        <Nav className="ml-auto" navbar>
-                            <NavItem>
-                                <NavLink to="/" className="inactive" activeClassName="active"
-                                         exact={true}>Home</NavLink>
-                            </NavItem>
-                            <NavItem className="ml-3">
-                                <NavLink to="/login" className="inactive" activeClassName="active"
-                                         exact={true}>Login</NavLink>
-                            </NavItem>
-                            <NavItem className="ml-3">
-                                <NavLink to="/cart" className="inactive" activeClassName="active"
-                                         exact={true}>Cart</NavLink>
-                            </NavItem>
-                        </Nav>
-                    </Collapse>
-                </Navbar>
-                <Container>
+                <MyNav />
+                <Container fluid>
                     <h2>Product List: </h2>
                     <Row>
-                        {
-                            this.renderProducts()
-                        }
+                        <Col>
+                            <Row>
+                                {
+                                    this.renderProducts()
+                                }
+                            </Row>
+                        </Col>
+                        <Col xs={3}>
+                            <Basket cartItems={this.props.cartItems}
+                            />
+                        </Col>
                     </Row>
                 </Container>
             </div>
@@ -114,4 +122,9 @@ class Home extends Component {
     }
 }
 
-export default Home;
+const mapStateToProps = (state) => ({
+    products: state.products.items,
+    cartItems: state.cart.items
+})
+
+export default connect(mapStateToProps, {fetchProducts, addToCart})(Home);

@@ -18,6 +18,8 @@ Rails.application.routes.draw do
         delete '/logout', to: 'session#destroy'
   end
 
+  post '/api/v1/products/add_to_cart/:id', to: 'api/v1/products#add_to_cart', as: 'add_to_cart'
+
 #   post '/backend/login', to: 'backend#login', :as => 'backend_login'
   post '/backend/signup', to: 'backend#create'
   post '/backend/products/new', to: 'backend/products#create'

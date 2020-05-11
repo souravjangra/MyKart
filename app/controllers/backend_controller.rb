@@ -32,6 +32,9 @@ class BackendController < ApplicationController
     render 'index'
   end
 
+  def home
+  end
+
   def logged_in_user
         unless logged_in?
           flash[:danger] = "Please log in."
