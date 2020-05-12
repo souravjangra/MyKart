@@ -31,7 +31,7 @@ class Basket extends Component {
                         </ul>
                         <p>Total: &#8377;{util.formatCurrency(cartItems.reduce((a,c)=>a+c.price*c.count,0))}</p>
                         <br/>
-                        {this.props.fromCart ? <button className="btn btn-primary" onClick={()=>{alert("Checkout")}}>
+                        {this.props.fromCart ? <button className="btn btn-primary" onClick={()=>{this.props.onCheckout()}}>
                             Checkout
                         </button> : <button className="btn btn-primary" onClick={()=>{this.props.history.push('/cart')}}>
                             Proceed
