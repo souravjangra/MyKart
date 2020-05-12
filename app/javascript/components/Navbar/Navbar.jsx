@@ -1,6 +1,19 @@
 import React, {Component} from 'react';
-import {Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem} from "reactstrap";
-import {NavLink} from "react-router-dom";
+import {
+    Collapse,
+    Navbar,
+    NavbarToggler,
+    NavbarBrand,
+    Nav,
+    NavItem,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+} from "reactstrap";
+import {NavLink, withRouter} from "react-router-dom";
+import {connect} from "react-redux";
+import {logout} from "../../store/actions/authActions";
 
 class MyNav extends Component {
 
@@ -18,30 +31,75 @@ class MyNav extends Component {
         }));
     }
 
+    checkUserLoggedIn = () => {
+        if(localStorage.getItem("user")){
+            return true;
+        }
+        return false;
+    }
+
+    onLogout = () => {
+        this.props.logout();
+        this.props.history.push();
+        window.location.reload();
+    }
+
     render() {
         return (
+            <div>
                 <Navbar color="dark" dark expand="md">
-                    <NavbarBrand href="/">MyKart</NavbarBrand>
                     <NavbarToggler onClick={this.navToggle}/>
+                    <NavbarBrand>MyKart</NavbarBrand>
                     <Collapse isOpen={this.state.isNavOpen} navbar>
                         <Nav className="ml-auto" navbar>
-                            <NavItem>
+                            <NavItem className="mt-2">
                                 <NavLink to="/" className="inactive" activeClassName="active"
                                          exact={true}>Home</NavLink>
                             </NavItem>
-                            <NavItem className="ml-3">
+                            <NavItem className="ml-3 mt-2">
                                 <NavLink to="/login" className="inactive" activeClassName="active"
                                          exact={true}>Login</NavLink>
                             </NavItem>
-                            <NavItem className="ml-3">
+                            <NavItem className="ml-3 mt-2">
                                 <NavLink to="/cart" className="inactive" activeClassName="active"
                                          exact={true}>Cart</NavLink>
                             </NavItem>
+                            {/*{this.checkUserLoggedIn() && <NavItem className="ml-3">*/}
+                            {/*    <NavLink to="/account" className="inactive" activeClassName="active"*/}
+                            {/*             exact={true}>My Account</NavLink>*/}
+                            {/*</NavItem>*/}
+                            {/*}*/}
+                            {this.checkUserLoggedIn() &&
+                                    <UncontrolledDropdown nav inNavbar className="ml-3">
+                                        <DropdownToggle className="inactive" activeClassName="active" nav caret>
+                                            My Account
+                                        </DropdownToggle>
+                                        <DropdownMenu right>
+                                            <DropdownItem>
+                                                <NavLink to="/account"
+                                                    exact={true}>Account</NavLink>
+                                            </DropdownItem>
+                                            <DropdownItem>
+                                                <NavLink to="/orders"
+                                                         exact={true}>Orders</NavLink>
+                                            </DropdownItem>
+                                            <DropdownItem
+                                            onClick={this.onLogout}>
+                                                Logout
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
+                            }
                         </Nav>
                     </Collapse>
                 </Navbar>
+            </div>
         );
     }
 }
 
-export default MyNav;
+const mapStateToProps = (state) => ({
+
+});
+
+export default connect(mapStateToProps, {logout})(withRouter(MyNav));

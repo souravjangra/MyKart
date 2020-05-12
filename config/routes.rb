@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'place_order/create'
   get 'session/new'
   default_url_options :host => "localhost:5000"
 
@@ -18,6 +19,12 @@ Rails.application.routes.draw do
         delete '/logout', to: 'session#destroy'
   end
 
+#   resource :users, only: [:create]
+  post "/signup", to: "users#create"
+  post "/login", to: "users#login"
+  get "/auto_login", to: "users#auto_login"
+  get "/user_is_authed", to: "users#user_is_authed"
+
   post '/api/v1/products/add_to_cart/:id', to: 'api/v1/products#add_to_cart', as: 'add_to_cart'
 
 #   post '/backend/login', to: 'backend#login', :as => 'backend_login'
@@ -31,6 +38,10 @@ Rails.application.routes.draw do
   resources :backend do
     get 'backend_home'
   end
+
+  post '/checkout', to: 'place_order#create'
+
+  post '/orders', to: 'order#index'
 
   root 'homepage#index'
   get '/*path' => 'homepage#index', constraints: lambda { |req|

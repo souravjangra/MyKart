@@ -6,6 +6,9 @@ const initialState = {};
 if(localStorage.getItem('cartItems')) {
     initialState.cart = {items: JSON.parse(localStorage.getItem('cartItems'))}
 }
+if(localStorage.getItem("user")) {
+    initialState.auth = {user: JSON.parse(localStorage.getItem("user"))}
+}
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose ;
 

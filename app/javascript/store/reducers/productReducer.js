@@ -9,7 +9,7 @@ export default function (state=initialState, action) {
             ...state,
             items: action.payload
         }
-        default: return state
+        default: return state;
     }
 }
 
