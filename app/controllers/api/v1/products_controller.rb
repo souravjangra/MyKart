@@ -1,5 +1,8 @@
 class Api::V1::ProductsController < ApplicationController
 
+  skip_before_action :verify_authenticity_token
+  before_action :initialize_session
+
   def index
     render json: Product.all
   end
@@ -24,6 +27,11 @@ class Api::V1::ProductsController < ApplicationController
 #     product = Product.create(product_params)
   end
 
+  def add_to_cart
+    id = params[:id].to_i
+    session[:cart] << id unless session[:cart].include?(id)
+  end
+
   def destroy
     Product.destroy(params[:id])
     render json: {status: 'success', message: 'Successfully deleted', code: "200"}
@@ -38,6 +46,10 @@ class Api::V1::ProductsController < ApplicationController
   private
   def product_params
     params.require(:product).permit(:id, :sku, :name, :description, :price, :quantity)
+  end
+
+  def initialize_session
+    session[:cart] ||= []
   end
 
 end

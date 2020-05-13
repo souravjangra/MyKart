@@ -1,0 +1,16 @@
+<h2 class="header">Admin Login</h2>
+
+<div class="admin-login">
+        <%= form_with scope: :session, url: backend_login_path, local:true do |form| %>
+            <p>
+                <%= form.label :username %>
+                <%= form.text_field :username, "size" => 20, required: true  %>
+            </p>
+            <p>
+               <%= form.label :password %>
+               <%= form.password_field :password, "size" => 20, required: true  %>
+            </p>
+            <p> <%= form.submit "Login" %> </p>
+        <% end %>
+
+    </div>

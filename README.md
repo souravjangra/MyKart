@@ -1,24 +1,48 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+**MyKart**
+Ecommerce web application
 
-Things you may want to cover:
+**Dependencies**
 
-* Ruby version
+•	Ruby 2 and above
 
-* System dependencies
+•	Rails 6
 
-* Configuration
+•	Postgresql 12
 
-* Database creation
+•	Apache Webserver 2.4
 
-* Database initialization
+•	Yarn
 
-* How to run the test suite
+•	Npm (Node package manager)
 
-* Services (job queues, cache servers, search engines, etc.)
+•	Git
 
-* Deployment instructions
+•	Foreman
 
-* ...
+
+
+**Installation**
+
+•	Git clone https://github.com/souravjangra/MyKart.git into your system.
+
+•   cd MyKart
+
+Install the needed gems using this command :
+
+•	bundle install
+
+Install the needed npm dependencies using :
+
+•	npm install or yarn install
+
+Next, migrate the database:
+
+•	rails db:migrate
+
+•	foreman start -f Procfile.dev or rails server
+
+Now your project must be running at localhost:5000
+
+
