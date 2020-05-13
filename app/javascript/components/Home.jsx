@@ -16,6 +16,7 @@ import {connect} from 'react-redux';
 import {fetchProducts } from "../store/actions/productActions";
 import {addToCart} from "../store/actions/cartActions";
 import MyNav from "./Navbar/Navbar";
+import TextTruncate from 'react-text-truncate';
 
 class Home extends Component {
 
@@ -25,7 +26,8 @@ class Home extends Component {
             isNavOpen: false,
             isSetOpen: false,
             products: [],
-            cartItems: []
+            cartItems: [],
+            textTruncated: true
         }
     }
 
@@ -64,33 +66,43 @@ class Home extends Component {
 
     renderProducts = () => {
         var products = this.props.products.map((product) => {
-            return <Card style={{width: '18rem', margin: '12px'}}>
-                <Card.Body class="d-flex flex-column p-3">
-                    <div class="row">
-                        <div class="col">
-                            <Card.Title>{product.name}</Card.Title>
+            return <Card style={{width: '18rem', margin: '12px'}} className="h-100">
+                <Card.Body class="p-3">
+                    <Row>
+                        <Col sm={6}>
+                            <Card.Title><p>{product.name}</p></Card.Title>
                             <Card.Text>
-                                {product.description}
+                                {this.state.textTruncated ? <TextTruncate
+                                    line={4}
+                                    element="span"
+                                    truncateText="…"
+                                    text={product.description}
+                                    textTruncateChild={<a className="text-primary" onClick={()=>{this.setState({textTruncated: false})}}>More</a>}
+                                /> :
+                                    <p>{product.description}<br/><a className="text-primary" onClick={()=>{this.setState({textTruncated: true})}}>Hide</a></p>
+                                }
                             </Card.Text>
                             <Card.Text>
                                 <p>&#8377;{product.price}</p>
                             </Card.Text>
 
-                        </div>
-                        <div class="col">
-                            <Card.Img style={{height: 200, width: 120}} variant="top" src={product.image}
+                        </Col>
+                        <Col sm={6}>
+                            <Card.Img style={{height: 180, width: 110}} variant="top" src={product.image}
                                       class="float-right"/>
-                        </div>
-                    </div>
-                    <div class="row justify-content-around mt-2">
-                        <div class="col">
-                            <Button outline color="primary">Buy Now</Button>
-                        </div>
-                        <div className="col">
-                            <Button outline color="primary" onClick={() => {this.props.addToCart(this.props.cartItems,product)}}>Add to cart</Button>
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 </Card.Body>
+                <Card.Footer>
+                    <Row className="d-flex mt-auto">
+                        <Col>
+                            <Button outline color="primary">Buy Now</Button>
+                        </Col>
+                        <Col>
+                            <Button outline color="primary" onClick={() => {this.props.addToCart(this.props.cartItems,product)}}>Add to cart</Button>
+                        </Col>
+                    </Row>
+                </Card.Footer>
             </Card>
         });
 

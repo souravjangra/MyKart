@@ -4,6 +4,7 @@ import MyNav from "../Navbar/Navbar";
 import Basket from "../Products/Basket";
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
+import CartDetails from "./CartDetails";
 
 class Cart extends Component {
 
@@ -67,7 +68,7 @@ class Cart extends Component {
                 <MyNav />
                 <Container>
                     <h1>Your Cart Details: </h1>
-                    <Basket fromCart={true} onCheckout={this.handleCheckout}/>
+                    <CartDetails fromCart={true} onCheckout={this.handleCheckout}/>
                 </Container>
             </div>
         );

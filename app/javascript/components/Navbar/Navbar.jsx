@@ -75,13 +75,11 @@ class MyNav extends Component {
                                             My Account
                                         </DropdownToggle>
                                         <DropdownMenu right>
-                                            <DropdownItem>
-                                                <NavLink to="/account"
-                                                    exact={true}>Account</NavLink>
+                                            <DropdownItem onClick={()=>{this.props.history.push('account')}}>
+                                                Account
                                             </DropdownItem>
-                                            <DropdownItem>
-                                                <NavLink to="/orders"
-                                                         exact={true}>Orders</NavLink>
+                                            <DropdownItem onClick={()=>{this.props.history.push('orders')}}>
+                                                Orders
                                             </DropdownItem>
                                             <DropdownItem
                                             onClick={this.onLogout}>

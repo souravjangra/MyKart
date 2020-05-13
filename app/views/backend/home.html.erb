@@ -2,8 +2,6 @@
     <%= render 'nav' %>
 
     <div class="container mt-4">
-        <%= debug session[:cart] %>
-        <%= debug session[:user_id] %>
 
         <h2>Products: </h2>
             <%= link_to "Create Product", new_backend_product_path, :class => "btn btn-primary btn-sm"%>

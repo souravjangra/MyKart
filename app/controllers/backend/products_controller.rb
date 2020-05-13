@@ -15,15 +15,10 @@ class Backend::ProductsController < ApplicationController
     @product = Product.new(product_params)
     @product.product_image.attach(product_params[:image])
 
-#     active_storage_disk_service = ActiveStorage::Service::DiskService.new(root: Rails.root.to_s + '/storage/')
-#     active_storage_disk_service.send(:path_for, @product.image.key)
-    image_path = ActiveStorage::Blob.service.send(:path_for, @product.product_image.blob.key)
-    image_path.slice! Rails.root.to_s
-
-    product_params[:image] = image_path
-    @product.update_attribute(:image, image_path)
-
     if @product.save
+        image_path = Rails.application.routes.url_helpers.rails_blob_url(@product.product_image, :host => "localhost:5000")
+
+        @product.update_attribute(:image, image_path)
         flash[:success] = "Successfully created!"
         redirect_to :action => 'index'
     else
