@@ -33,7 +33,7 @@ class Backend::ProductsController < ApplicationController
 
   def update
     @product = Product.find(params[:id])
-    if product_params[:image]
+        if product_params[:image]
         @product.product_image.attach(product_params[:image])
 
         image_path = Rails.application.routes.url_helpers.rails_blob_url(@product.product_image, :host => "localhost:5000")
@@ -43,15 +43,16 @@ class Backend::ProductsController < ApplicationController
 #         product_params[:image] = image_path
         attributes = product_params.clone
         attributes[:image] = image_path
-        puts "attributes: #{attributes[:image]}"
-        @product.update_attribute(:image, image_path)
-    end
+#         puts "attributes: #{attributes[:image]}"
+#         @product.update_attribute(:image, image_path)
 
-    if @product.update(attributes)
+        @product.update(attributes)
         redirect_to :action => 'index'
-    else
-        render 'edit'
-    end
+
+        elsif
+            @product.update(product_params)
+            redirect_to :action => 'index'
+        end
   end
 
   def destroy
